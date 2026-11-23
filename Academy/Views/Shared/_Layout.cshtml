@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Academy</title>
+    <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/controls.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Academy.styles.css" asp-append-version="true" />
-
 </head>
 <body>
     <header>
@@ -27,8 +27,25 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Directions" asp-action="Index">Directions</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Directions" asp-action="Index">Направления</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Groups" asp-action="Index">Группы</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Index">Студенты</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Teachers" asp-action="Index">Преподаватели</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Disciplines" asp-action="Index">Дисциплины</a>
                         </li>
 
                     </ul>
@@ -53,3 +70,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+ 

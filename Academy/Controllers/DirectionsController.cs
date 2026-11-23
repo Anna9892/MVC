@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Academy.Models;
@@ -13,35 +12,28 @@ public class DirectionsController : Controller
     }
 
     // GET: DIRECTIONS
-    public async Task<IActionResult> Index(string sortOrder)    
+    public async Task<IActionResult> Index(string sortOrder)
     {
-        ViewData["NameSortParam"] = sortOrder== "name_desc" ?"name_asc" : "name_desc";
-        IQueryable<Academy.Models.Direction> directions = from d in _context.Directions select d;
+        ViewData["NameSortParam"] = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+        IQueryable<Direction> directions = from d in _context.Directions select d;
 
         switch (sortOrder)
         {
             case "name_asc": directions = directions.OrderBy(d => d.direction_name); break;
-            case "name_desc": directions = directions.OrderByDescending(d=> d.direction_name);break;
+            case "name_desc": directions = directions.OrderByDescending(d => d.direction_name); break;
         }
-        
-        return View(directions);
-        //return View(await _context.Directions.ToListAsync());
+
+        return View(await directions.ToListAsync());
     }
 
     // GET: DIRECTIONS/Details/5
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var direction = await _context.Directions
             .FirstOrDefaultAsync(m => m.direction_id == id);
-        if (direction == null)
-        {
-            return NotFound();
-        }
+        if (direction == null) return NotFound();
 
         return View(direction);
     }
@@ -53,11 +45,9 @@ public class DirectionsController : Controller
     }
 
     // POST: DIRECTIONS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("direction_id,direction_name,Groups")] Direction direction)
+    public async Task<IActionResult> Create([Bind("direction_id,direction_name")] Direction direction)
     {
         if (ModelState.IsValid)
         {
@@ -69,32 +59,21 @@ public class DirectionsController : Controller
     }
 
     // GET: DIRECTIONS/Edit/5
-    public async Task<IActionResult> Edit(int? direction_id)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (direction_id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
-        var direction = await _context.Directions.FindAsync(direction_id);
-        if (direction == null)
-        {
-            return NotFound();
-        }
+        var direction = await _context.Directions.FindAsync(id);
+        if (direction == null) return NotFound();
         return View(direction);
     }
 
     // POST: DIRECTIONS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? direction_id, [Bind("direction_id,direction_name,Groups")] Direction direction)
+    public async Task<IActionResult> Edit(int id, [Bind("direction_id,direction_name")] Direction direction)
     {
-        if (direction_id != direction.direction_id)
-        {
-            return NotFound();
-        }
+        if (id != direction.direction_id) return NotFound();
 
         if (ModelState.IsValid)
         {
@@ -105,14 +84,8 @@ public class DirectionsController : Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DirectionExists(direction.direction_id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!DirectionExists(direction.direction_id)) return NotFound();
+                else throw;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -120,19 +93,13 @@ public class DirectionsController : Controller
     }
 
     // GET: DIRECTIONS/Delete/5
-    public async Task<IActionResult> Delete(int? direction_id)
+    public async Task<IActionResult> Delete(int? id)
     {
-        if (direction_id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var direction = await _context.Directions
-            .FirstOrDefaultAsync(m => m.direction_id == direction_id);
-        if (direction == null)
-        {
-            return NotFound();
-        }
+            .FirstOrDefaultAsync(m => m.direction_id == id);
+        if (direction == null) return NotFound();
 
         return View(direction);
     }
@@ -140,9 +107,9 @@ public class DirectionsController : Controller
     // POST: DIRECTIONS/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? direction_id)
+    public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var direction = await _context.Directions.FindAsync(direction_id);
+        var direction = await _context.Directions.FindAsync(id);
         if (direction != null)
         {
             _context.Directions.Remove(direction);
@@ -152,7 +119,7 @@ public class DirectionsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool DirectionExists(int? direction_id)
+    private bool DirectionExists(int direction_id)
     {
         return _context.Directions.Any(e => e.direction_id == direction_id);
     }
